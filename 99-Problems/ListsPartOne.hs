@@ -42,7 +42,10 @@ flattenList (Elem a) = [a]
 flattenList (List (x:xs)) = flattenList x ++ flattenList (List xs)
 flattenList (List []) = []
                     
---compress :: (Eq a) => [a] -> [a]
---compress [_] = [_]
---compress list = list
+compress :: (Eq a) => [a] -> [a]
+compress [] = []
+compress [a] = [a]
+compress (x:xs) = if x == head xs
+                     then compress xs
+                  else x: compress xs
                       
