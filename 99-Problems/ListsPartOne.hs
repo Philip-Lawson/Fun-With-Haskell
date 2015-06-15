@@ -33,8 +33,16 @@ isPalindrome [] = True
 isPalindrome [a] = True
 isPalindrome list = (head list) == (last list) && isPalindrome ( tail (init list) )
 isPalindrome' list = list == (reverse list)
+
+-- define Nested List for question
+data NestedList a = Elem a | List[NestedList a]
+
+flattenList :: NestedList a -> [a]
+flattenList (Elem a) = [a]
+flattenList (List (x:xs)) = flattenList x ++ flattenList (List xs)
+flattenList (List []) = []
                     
---noDuplicates :: (Eq a) => [a] -> [a]
---noDuplicates [_] = [_]
---noDuplicates list = list
+--compress :: (Eq a) => [a] -> [a]
+--compress [_] = [_]
+--compress list = list
                       
