@@ -1,12 +1,12 @@
 percolateKata :: [[Char]] -> Bool
 percolateKata [[]]   = True
 percolateKata (x:xs) = percolateKata' filledList
-                        where filledList = [(fillWithWater x)] ++ xs
+                        where filledList = (fillWithWater x): xs
 
 percolateKata' :: [[Char]] -> Bool
 percolateKata' [[]]     = True
 percolateKata' [list]   = containsWater list
-percolateKata' (x:y:xs) | (containsWater trickledList) == True = percolateKata' ([trickledList] ++ xs)                          
+percolateKata' (x:y:xs) | (containsWater trickledList) = percolateKata' (trickledList: xs)                          
                         | otherwise = False
                            where trickledList = (spreadWaterLeft . spreadWaterRight) (trickleWaterDown x y)
 
@@ -17,14 +17,14 @@ containsWater (x:xs) | x == 'W' = True
 
 fillWithWater :: [Char] -> [Char]
 fillWithWater []     = []
-fillWithWater (x:xs) | x == '0'  = "W" ++ fillWithWater xs
-                     | otherwise = [x] ++ fillWithWater xs  
+fillWithWater (x:xs) | x == '0'  = 'W': fillWithWater xs
+                     | otherwise = x: fillWithWater xs  
 
 trickleWaterDown :: [Char] -> [Char] -> [Char]
 trickleWaterDown [] _          = []
 trickleWaterDown _ []          = []
-trickleWaterDown (x:xs) (y:ys) | x == 'W' && y == '0' = [x] ++ trickleWaterDown xs ys
-                               | otherwise            = [y] ++ trickleWaterDown xs ys
+trickleWaterDown (x:xs) (y:ys) | x == 'W' && y == '0' = x: trickleWaterDown xs ys
+                               | otherwise            = y: trickleWaterDown xs ys
                       
 spreadWaterLeft :: [Char] -> [Char]
 spreadWaterLeft []   = []
@@ -34,8 +34,8 @@ spreadWaterLeft list = (reverse . spreadWaterRight . reverse) list
 spreadWaterRight :: [Char] -> [Char]
 spreadWaterRight []       = []
 spreadWaterRight [a]      = [a]
-spreadWaterRight (x:y:xs) | x == 'W' && y == '0' = [x] ++ spreadWaterRight (x:xs)
-                          | otherwise            = [x] ++ spreadWaterRight (y:xs)  
+spreadWaterRight (x:y:xs) | x == 'W' && y == '0' = x: spreadWaterRight (x:xs)
+                          | otherwise            = x: spreadWaterRight (y:xs)  
 
 
 
